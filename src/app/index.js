@@ -23,7 +23,16 @@ export default function App() {
           return launch;
         });
 
-        setLaunchesAndRockets(newUpdatedLaunches);
+        const sortedNewUpdatedLaunches = newUpdatedLaunches.sort((updatedLaunchA, updatedLaunchB) => {
+          if (updatedLaunchA.launch_date_local > updatedLaunchB.launch_date_local) {
+            return -1;
+          } else if (updatedLaunchA.launch_date_local < updatedLaunchB.launch_date_local) {
+            return 1;
+          }
+          return 0;
+        });
+
+        setLaunchesAndRockets(sortedNewUpdatedLaunches);
       }
     }
     fetchData();
