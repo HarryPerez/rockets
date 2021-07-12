@@ -11,7 +11,7 @@ function Home() {
   const launchesAndRockets = useContext(SpacexContext);
   const onHandleChange = (launchName) => setFilter(launchName);
 
-  const filteredLaunchesAndRockets = filter !== '' ? launchesAndRockets.filter(launchAndRocket => launchAndRocket.mission_name.includes(filter)) : launchesAndRockets;
+  const filteredLaunchesAndRockets = filter !== '' ? launchesAndRockets.filter(launchAndRocket => launchAndRocket.mission_name.toLowerCase().includes(filter.toLowerCase())) : launchesAndRockets;
 
   return (
     <div className="home-container">

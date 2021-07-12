@@ -1,8 +1,12 @@
 .launch-rocket-container {
   background: white;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 200px;
   margin-bottom: 50px;
   width: 600px;
+}
+
+.section {
+  color: blue;
 }
