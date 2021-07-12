@@ -9,22 +9,31 @@ import { SpacexContext } from "./context";
 import "./styles.css";
 
 export default function App() {
-  const [launches, setLaunches] = useState(null);
-  const [rockets, setRockets] = useState(null);
+  const [launchesAndRockets, setLaunchesAndRockets] = useState(null);
 
   useEffect(() => {
-    if (!launches) {
-      getLaunches().then((data) => setLaunches(data));
-    }
+    async function fetchData() {
+      if (!launchesAndRockets) {
+        const launches = await getLaunches().then(response => response.data);
+        const rockets = await getRockets().then(response => response.data);
 
-    if (!rockets) {
-      getRockets().then((data) => setRockets(data));
+        const newUpdatedLaunches = launches.map(launch => {
+          const rocketMissingInfo = rockets.find(rocket => rocket.rocket_id === launch.rocket.rocket_id);
+          launch.rocket = { ...launch.rocket, ...rocketMissingInfo };
+          return launch;
+        });
+
+        setLaunchesAndRockets(newUpdatedLaunches);
+      }
     }
-  }, [launches, rockets]);
+    fetchData();
+  }, [launchesAndRockets]);
+
+  console.log({ launchesAndRockets });
 
   return (
-    <SpacexContext.Provider value={launches}>
-      {!launches ? (
+    <SpacexContext.Provider value={launchesAndRockets}>
+      {!launchesAndRockets ? (
         <div className="loader-container">
           <Loader
             type="Puff"
