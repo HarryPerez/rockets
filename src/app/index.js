@@ -24,9 +24,9 @@ export default function App() {
         });
 
         const sortedNewUpdatedLaunches = newUpdatedLaunches.sort((updatedLaunchA, updatedLaunchB) => {
-          if (updatedLaunchA.launch_date_local > updatedLaunchB.launch_date_local) {
+          if (updatedLaunchA.launch_date_utc > updatedLaunchB.launch_date_utc) {
             return -1;
-          } else if (updatedLaunchA.launch_date_local < updatedLaunchB.launch_date_local) {
+          } else if (updatedLaunchA.launch_date_utc < updatedLaunchB.launch_date_utc) {
             return 1;
           }
           return 0;
