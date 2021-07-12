@@ -1,25 +1,42 @@
-import logo from '../logo.svg';
-import './styles.css';
+import React, { useEffect, useState } from "react";
+import Loader from "react-loader-spinner";
 
-function App() {
+import { getLaunches, getRockets } from "../services/SpacexService";
+
+import Home from "./screens/Home";
+import { SpacexContext } from "./context";
+
+import "./styles.css";
+
+export default function App() {
+  const [launches, setLaunches] = useState(null);
+  const [rockets, setRockets] = useState(null);
+
+  useEffect(() => {
+    if (!launches) {
+      getLaunches().then((data) => setLaunches(data));
+    }
+
+    if (!rockets) {
+      getRockets().then((data) => setRockets(data));
+    }
+  }, [launches, rockets]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SpacexContext.Provider value={launches}>
+      {!launches ? (
+        <div className="loader-container">
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height={100}
+            width={100}
+            timeout={3000}
+          />
+        </div>
+      ) : (
+        <Home />
+      )}
+    </SpacexContext.Provider>
   );
 }
-
-export default App;
