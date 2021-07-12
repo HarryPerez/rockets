@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "react-loader-spinner";
 
 import { getLaunches, getRockets } from "../services/SpacexService";
+import { getFavs } from "../services/LocalStorageService";
 
 import Home from "./screens/Home";
 import { SpacexContext } from "./context";
@@ -14,11 +15,13 @@ export default function App() {
   useEffect(() => {
     async function fetchData() {
       if (!launchesAndRockets) {
+        const allFavs = getFavs();
         const launches = await getLaunches().then(response => response.data);
         const rockets = await getRockets().then(response => response.data);
 
         const newUpdatedLaunches = launches.map(launch => {
           const rocketMissingInfo = rockets.find(rocket => rocket.rocket_id === launch.rocket.rocket_id);
+          launch.isFav = !!allFavs?.find(fav => fav === launch.mission_name);
           launch.rocket = { ...launch.rocket, ...rocketMissingInfo };
           return launch;
         });
