@@ -29,8 +29,6 @@ export default function App() {
     fetchData();
   }, [launchesAndRockets]);
 
-  console.log({ launchesAndRockets });
-
   return (
     <SpacexContext.Provider value={launchesAndRockets}>
       {!launchesAndRockets ? (
